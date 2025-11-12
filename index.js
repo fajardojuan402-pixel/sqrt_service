@@ -1,9 +1,12 @@
-
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8085;
 
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('Hola mundo');
+});
 
 function isNumber(value) {
   return typeof value === 'number' && Number.isFinite(value);
@@ -14,6 +17,12 @@ app.post('/sqrt', (req, res) => {
 
   const num1 = body.num1;
   const num2 = body.num2;
+
+  if (!isNumber(num1) || !isNumber(num2)) {
+    return res.status(400).json({
+      message: 'num1 y num2 deben ser números válidos.',
+    });
+  }
 
   if (!Number.isInteger(num2) || num2 <= 0) {
     return res.status(400).json({
@@ -28,11 +37,9 @@ app.post('/sqrt', (req, res) => {
   }
 
   const result = Math.sign(num1) * Math.pow(Math.abs(num1), 1 / num2);
-  console.log(`Nodo fue utilizado. Resultado ${result}`)
-  return res.json(result);
-
+  console.log(`Nodo fue utilizado. Resultado: ${result}`);
+  return res.json({ result });
 });
-
 
 app.use((err, req, res, next) => {
   console.error(err);
@@ -40,5 +47,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-
+  console.log(`Servidor escuchando en el puerto ${port}`);
 });
+
