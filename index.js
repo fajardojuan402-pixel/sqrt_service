@@ -38,7 +38,7 @@ app.post('/sqrt', (req, res) => {
 
   const result = Math.sign(num1) * Math.pow(Math.abs(num1), 1 / num2);
   console.log(`Nodo fue utilizado. Resultado: ${result}`);
-  return res.json({ result });
+  return res.json(result);
 });
 
 app.use((err, req, res, next) => {
